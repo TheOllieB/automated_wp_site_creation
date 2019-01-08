@@ -4,15 +4,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from colorama import init
+from termcolor import colored
 import time
 import os
 from dotenv import load_dotenv
 
+init()
 #usernameStr = os.getenv('USERNAME_STR')
 #passwordStr = os.getenv('PASSWORD_STR')
-url = input('Please enter URL of site to be created e.g https://dev-blogs.manchester.ac.uk/yoururl :  ')
-title = input('Please enter the title of the site : ')
-style = input('Please type the faculty the site belongs to. Choice: humanities/fse/non-faculty/non-branded (default is BMH)')
+print(colored('Please enter URL of site to be created e.g https://dev-blogs.manchester.ac.uk/yoururl :  ', 'white', 'on_magenta'))
+url = input()
+print(colored('Please enter the title of the site : ', 'white', 'on_magenta'))
+title = input()
+print(colored('Please type the faculty the site belongs to. Choice: humanities/fse/non-faculty/non-branded (default is BMH)', 'white', 'on_magenta'))
+style = input()
 style = style.lower()
 usernameStr = 'oliver.burge@manchester.ac.uk'
 passwordStr = ''
@@ -89,9 +95,10 @@ WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, "//h3
 navMenu = browser.find_element_by_xpath("//h3[contains(text(), 'Navigation Menu')]")
 leftNavArea = browser.find_element_by_id('et_pb_widget_area_1')
 ActionChains(browser).click_and_hold(navMenu).move_to_element(leftNavArea).release(leftNavArea).perform()
-select = Select(browser.find_element_by_id('widget_nav_menu-2-nav_menu'))
-select.select_by_visible_text('primary menu')
-#browser.find_element_by_xpath("//select[@id='widget_nav_menu-2-nav_menu']/option[text()='primary menu']").click()
+#browser.find_element_by_xpath("//button[@class='widget-action hide-if-no-js']").click()
+select = Select(browser.find_element_by_xpath("//select[@name = 'widget-nav_menu[2][nav_menu]']"))
+select.select_by_visible_text('primary menu').click()
+#browser.find_element_by_xpath("//select[@id='widget_nav_menu-2-nav_menu']/option[contains(text()='primary menu')]").click()
 browser.find_element_by_id('widget-nav_menu-2-savewidget').click()
 print('LeftNavArea widget created')
 
