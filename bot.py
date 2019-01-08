@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 init()
 #usernameStr = os.getenv('USERNAME_STR')
 #passwordStr = os.getenv('PASSWORD_STR')
+
 print(colored('Please enter URL of site to be created e.g https://dev-blogs.manchester.ac.uk/yoururl :  ', 'white', 'on_magenta'))
 url = input()
 print(colored('Please enter the title of the site : ', 'white', 'on_magenta'))
@@ -39,7 +40,7 @@ siteTitle.send_keys(title)
 adminEmail = browser.find_element_by_id('admin-email')
 adminEmail.send_keys(usernameStr)
 addSite = browser.find_element_by_id('add-site').click()
-print('Site Created')
+print(colored('Site Created', 'cyan','on_white'))
 
 #Changing the site tagline
 browser.get(f'https://dev-blogs.manchester.ac.uk/{url}/wp-admin/options-general.php')
@@ -172,4 +173,5 @@ print('Set Search page successfully')
 
 # signInButton = browser.find_element_by_id('passwordNext')
 # #signInButton.click()
+print(colored('The site is now set up, a few things to do before the site is complete:\n1. Import layouts JSON file.\n2. Add About page.\n3. Use the theme customizer to adjust Blog post settings.\n ', 'white', 'on_magenta'))
 
