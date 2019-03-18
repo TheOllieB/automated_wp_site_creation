@@ -19,14 +19,26 @@ url = input()
 print(colored('Please enter the title of the site : ', 'white', 'on_magenta'))
 title = input()
 print(colored('Please type the faculty the site belongs to. Choice: humanities/fse/non-faculty/non-branded (default is BMH)', 'white', 'on_magenta'))
-style = input()
-style = style.lower()
+style = input().lower()
+if style == "bmh": 
+    style = ""
+else: stylesheet = f'<link rel="stylesheet" type="text/css" href="//blogs.manchester.ac.uk/wp-content/themes/UoMDiviChild/{style}.css">'
+print(colored('What platform do you want to create this site on (dev, uat, prod)? ', 'white', 'on_magenta'))
+plat = input().lower()
+
+if plat == "dev":
+    plat = "dev-blogs"
+elif  plat == "uat":
+    plat="uat-blogs"
+else: 
+    plat == "sites"
+
 usernameStr = 'oliver.burge@manchester.ac.uk'
 passwordStr = ''
 
 #Create site
 browser = webdriver.Chrome()
-browser.get(('https://dev-blogs.manchester.ac.uk/wp-admin/'))
+browser.get((f'https://{plat}.manchester.ac.uk/wp-admin/'))
 
 time.sleep(15)
 
@@ -68,7 +80,7 @@ menuName = browser.find_element_by_id('menu-name')
 menuName.send_keys('primary menu')
 browser.find_element_by_id('save_menu_header').click()
 browser.find_element_by_id('locations-primary-menu').click()
-#browser.find_elements_by_xpath("//h3[contains(text(), 'Custom Links')]").click()
+browser.find_element_by_xpath("//h3[contains(text(), 'Custom Links')]").click()
 browser.find_element_by_id('add-custom-links').click()
 customURL = browser.find_element_by_xpath("//input[@class='code menu-item-textbox']").clear()
 site = f'https://dev-blogs.manchester.ac.uk/{url}'
@@ -97,22 +109,23 @@ navMenu = browser.find_element_by_xpath("//h3[contains(text(), 'Navigation Menu'
 leftNavArea = browser.find_element_by_id('et_pb_widget_area_1')
 ActionChains(browser).click_and_hold(navMenu).move_to_element(leftNavArea).release(leftNavArea).perform()
 #browser.find_element_by_xpath("//button[@class='widget-action hide-if-no-js']").click()
-select = Select(browser.find_element_by_xpath("//select[@name = 'widget-nav_menu[2][nav_menu]']"))
-select.select_by_visible_text('primary menu').click()
-#browser.find_element_by_xpath("//select[@id='widget_nav_menu-2-nav_menu']/option[contains(text()='primary menu')]").click()
-browser.find_element_by_id('widget-nav_menu-2-savewidget').click()
-print('LeftNavArea widget created')
+# select = Select(browser.find_element_by_xpath("//select[@id='widget-nav_menu-2-nav_menu']"))
+# select.select_by_value('2').click()
+# browser.find_element_by_xpath("//select[@id='widget_nav_menu-2-nav_menu']/option[text()='primary menu']").click()
+# browser.find_element_by_xpath("//input[@value='Save']").click()
+#browser.find_element_by_class_name('widget-control-save').click()
+print('LeftNavArea widget created, Please choose the menu you want.')
 
 #Home Page
 browser.get(f'https://dev-blogs.manchester.ac.uk/{url}/wp-admin/post-new.php?post_type=page')
 browser.find_element_by_xpath("//input[@name='post_title']").send_keys('Home')
-diviBuilder = browser.find_element_by_id('et_pb_toggle_builder')
-diviBuilder.click()
-browser.find_element_by_xpath("//a[@class='et-pb-layout-buttons et-pb-layout-buttons-load']").click()
-browser.find_element_by_xpath("//a[contains(text(), 'Your Saved Layouts')]").click()
-time.sleep(2)
-browser.find_element_by_xpath("//a[@class='et-dlib-layouts-grid-item et-dlib-home-page-final et-dlib-animate']").click()
-time.sleep(3)
+# diviBuilder = browser.find_element_by_xpath("//a[@id='et_pb_toggle_builder']")
+# diviBuilder.click()
+# browser.find_element_by_xpath("//a[@class='et-pb-layout-buttons et-pb-layout-buttons-load']").click()
+# browser.find_element_by_xpath("//a[contains(text(), 'Your Saved Layouts')]").click()
+# time.sleep(2)
+# browser.find_element_by_xpath("//a[@class='et-dlib-layouts-grid-item et-dlib-home-page-final et-dlib-animate']").click()
+# time.sleep(3)
 browser.find_element_by_id('publish').click()
 print('Home page created')
 
